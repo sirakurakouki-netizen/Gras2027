@@ -1,0 +1,158 @@
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+/* Page backgrounds */
+body.page-games {
+  background: #0f222b;
+}
+
+body.page-tools {
+  background: linear-gradient(#133337, gray) no-repeat;
+  background-size: cover;
+}
+
+/* Top navigation pill */
+.nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 202px;
+  height: 100px;
+  border-radius: 45px;
+  background: #151515;
+  box-shadow: inset 0 0 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+.nav ul {
+  list-style: none;
+  width: inherit;
+  height: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1px;
+  height: 90px;
+  width: 95px;
+  background: #202020;
+  border-top: 1px solid #353535;
+  box-shadow: 0 15px 20px 0 rgba(0, 0, 0, 0.5);
+  transition: all 0.5s;
+}
+
+.nav li:first-of-type {
+  border-top-left-radius: 40px;
+  border-bottom-left-radius: 40px;
+}
+
+.nav li:last-of-type {
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
+}
+
+.nav li:hover {
+  cursor: pointer;
+}
+
+.nav li.active {
+  background: #151515;
+  border-top: none;
+  border-bottom: 1px solid #252525;
+  box-shadow: inset 0 0 10px 1px rgba(0, 0, 0, 0.8);
+}
+
+.nav a {
+  display: inline-block;
+  color: gray;
+  text-decoration: none;
+}
+
+.nav .nav-games {
+  width: 80px;
+}
+
+.nav .nav-tools {
+  width: 50px;
+}
+
+/* Game grid */
+.row {
+  text-align: center;
+  padding-top: 60px;
+}
+
+.row:first-of-type {
+  padding-top: 140px;
+}
+
+.thumb {
+  height: 230px;
+  padding-left: 60px;
+  padding-right: 60px;
+}
+
+/* About page */
+.about {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 200px 20px 0;
+  color: white;
+}
+
+.about h1 {
+  text-align: center;
+  font-size: 42px;
+  margin-bottom: 40px;
+}
+
+.about h2 {
+  text-align: center;
+  font-size: 30px;
+  margin: 50px 0 25px;
+}
+
+.about p {
+  font-size: 18px;
+  line-height: 1.7;
+  margin-bottom: 22px;
+}
+
+/* Embedded game pages */
+.game-frame {
+  display: flex;
+  justify-content: center;
+  padding-top: 160px;
+}
+
+/* Disclaimer footer */
+.disclaimer {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 80px 20px 40px;
+  text-align: center;
+  color: #9fb3bc;
+  font-size: 14px;
+  line-height: 1.6;
+}

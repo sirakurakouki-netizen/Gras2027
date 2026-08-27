@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Play</title>
+	<link rel="icon" type="image/svg+xml" href="images/logo.svg">
+	<link rel="stylesheet" href="styles.css?v=5">
+
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-9E0X4X42X8"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+		gtag('config', 'G-9E0X4X42X8');
+	</script>
+</head>
+
+<body class="page-play">
+
+	<main class="player-wrap">
+
+		<div class="player-bar">
+			<a class="player-back" href="index.html" title="All games"></a>
+			<h1 id="player-title">Loading…</h1>
+			<div class="player-tags" id="player-tags"></div>
+			<div class="player-actions">
+				<button type="button" id="player-fav" title="Add to favorites"></button>
+				<button type="button" id="player-random" title="Random game"></button>
+				<button type="button" id="player-fullscreen" title="Fullscreen"></button>
+			</div>
+		</div>
+
+		<div class="player-frame-wrap">
+			<iframe id="player-frame" allow="fullscreen; autoplay; gamepad" allowfullscreen></iframe>
+		</div>
+
+		<section class="more-games">
+			<h2>More games you might like</h2>
+			<div class="games-grid" id="suggestions"></div>
+		</section>
+
+	</main>
+
+	<footer class="disclaimer">
+		<p>This site is a collection of open source games intended for fun, personal use only.
+			It is not intended to be used within school in any way. Any use inside school is not
+			intended and is solely the user's responsibility.</p>
+	</footer>
+
+	<script src="games-data.js?v=5"></script>
+	<script>
+		(function () {
+			"use strict";
+
+			var GAMES = window.GAMES || [];
+			var CATS = window.GAME_CATEGORIES || [];
+			var byId = {};
+			GAMES.forEach(function (g) { byId[g.id] = g; });
+			var catById = {};
+			CATS.forEach(function (c) { catById[c.id] = c; });
+
+			var id = new URLSearchParams(window.location.search).get("g");
+			var game = id && byId[id];
+			if (!game) {
+				window.location.replace("index.html");
+				return;
+			}
+
+			var FAV_KEY = "gras.favorites.v2";
+			var RECENT_KEY = "gras.recent.v2";
+
+			function load(key) {
+				try {
+					var v = JSON.parse(localStorage.getItem(key));
+					return Array.isArray(v) ? v : [];
+				} catch (e) { return []; }
+			}
+			function save(key, list) {
+				try { localStorage.setItem(key, JSON.stringify(list)); } catch (e) { /* ignore */ }
+			}
+
+			/* record this play */
+			var recent = load(RECENT_KEY);
+			var ri = recent.indexOf(game.id);
+			if (ri !== -1) recent.splice(ri, 1);
+			recent.unshift(game.id);
+			if (recent.length > 8) recent.length = 8;
+			save(RECENT_KEY, recent);
+
+			/* icons */
+			document.querySelector(".player-back").innerHTML = window.iconSVG("back");
+			document.getElementById("player-fav").innerHTML = window.iconSVG("star");
+			document.getElementById("player-random").innerHTML = window.iconSVG("dice");
+			document.getElementById("player-fullscreen").innerHTML = window.iconSVG("fullscreen");
+
+			/* header */
+			document.title = game.name + " — Open Source Games";
+			document.getElementById("player-title").textContent = game.name;
+
+			var tags = document.getElementById("player-tags");
+			game.cats.forEach(function (cid) {
+				var cat = catById[cid];
+				if (!cat) return;
+				var a = document.createElement("a");
+				a.className = "player-tag";
+				a.href = "index.html#c/" + cat.id;
+				a.innerHTML = window.iconSVG(cat.icon);
+				a.appendChild(document.createTextNode(" " + cat.name));
+				tags.appendChild(a);
+			});
+
+			/* favorite */
+			var favBtn = document.getElementById("player-fav");
+			function refreshFav() {
+				favBtn.classList.toggle("active", load(FAV_KEY).indexOf(game.id) !== -1);
+			}
+			favBtn.addEventListener("click", function () {
+				var favs = load(FAV_KEY);
+				var i = favs.indexOf(game.id);
+				if (i === -1) favs.unshift(game.id);
+				else favs.splice(i, 1);
+				save(FAV_KEY, favs);
+				refreshFav();
+			});
+			refreshFav();
+
+			/* random */
+			document.getElementById("player-random").addEventListener("click", function () {
+				var others = GAMES.filter(function (g) { return g.id !== game.id && !g.external; });
+				var pick = others[Math.floor(Math.random() * others.length)];
+				window.location.href = "play.html?g=" + encodeURIComponent(pick.id);
+			});
+
+			/* fullscreen */
+			var frame = document.getElementById("player-frame");
+			frame.src = encodeURI(game.href);
+			document.getElementById("player-fullscreen").addEventListener("click", function () {
+				if (frame.requestFullscreen) frame.requestFullscreen();
+				else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
+			});
+
+			/* suggestions: same categories first, then random fill */
+			var pool = GAMES.filter(function (g) {
+				return g.id !== game.id && g.cats.some(function (c) { return game.cats.indexOf(c) !== -1; });
+			});
+			var rest = GAMES.filter(function (g) { return g.id !== game.id && pool.indexOf(g) === -1; });
+			function shuffle(arr) {
+				for (var i = arr.length - 1; i > 0; i--) {
+					var j = Math.floor(Math.random() * (i + 1));
+					var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+				}
+				return arr;
+			}
+			var picks = shuffle(pool).concat(shuffle(rest)).slice(0, 8);
+			var grid = document.getElementById("suggestions");
+			picks.forEach(function (g) {
+				var a = document.createElement("a");
+				a.className = "card";
+				a.href = g.external ? g.href : "play.html?g=" + encodeURIComponent(g.id);
+				if (g.external) a.target = "_blank";
+				var img = document.createElement("img");
+				img.src = g.img;
+				img.alt = g.name;
+				img.loading = "lazy";
+				a.appendChild(img);
+				var title = document.createElement("span");
+				title.className = "card-title";
+				title.textContent = g.name;
+				a.appendChild(title);
+				grid.appendChild(a);
+			});
+		})();
+	</script>
+
+</body>
+
+</html>

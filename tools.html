@@ -5,45 +5,64 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>About</title>
-	<link rel="icon" type="image/png" href="images/game_logo.png">
-	<link rel="stylesheet" href="styles.css">
+	<link rel="icon" type="image/svg+xml" href="images/logo.svg">
+	<link rel="stylesheet" href="styles.css?v=5">
 </head>
 
 <body class="page-tools">
 
-	<nav class="nav">
-		<ul>
-			<li><a href="index.html"><img src="images/game_logo.png" class="nav-games" alt="Games"></a></li>
-			<li class="active"><a href="tools.html"><img src="images/tools.png" class="nav-tools" alt="About"></a></li>
-		</ul>
-	</nav>
+	<aside class="sidebar" id="sidebar">
+		<a class="side-logo" href="index.html">
+			<img src="images/logo.svg" alt="Open Source Games">
+		</a>
+		<div id="side-nav"></div>
+	</aside>
 
-	<main class="about">
-		<h1>About This Site</h1>
+	<div class="content">
 
-		<p>This site is a collection of open source games, gathered in one place purely for fun.
-			Everything here is meant for casual, personal enjoyment on your own time &mdash; playing
-			with friends, killing time at home, or just exploring what open source game developers
-			have built and shared with the world.</p>
+		<header class="topbar">
+			<button type="button" id="menu-toggle" class="menu-toggle" aria-label="Menu">
+				<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+			</button>
+			<nav class="nav">
+				<ul>
+					<li><a href="index.html"><img src="images/game_logo.png" class="nav-games" alt="Games"></a></li>
+					<li class="active"><a href="tools.html"><img src="images/tools.png" class="nav-tools" alt="About"></a></li>
+				</ul>
+			</nav>
+		</header>
 
-		<p>These games are <strong>not</strong> meant to be used in school. This site is not
-			designed for, intended for, or endorsed for use during class, on school networks, or on
-			school-managed devices. School time is for learning &mdash; play these at home. Any use
-			of this site inside a school is not intended and is solely the user's own choice and
-			responsibility.</p>
+		<main class="about">
+			<h1>About This Site</h1>
 
-		<h2>Credits</h2>
+			<p>This site is a collection of open source games, gathered in one place purely for fun.
+				Everything here is meant for casual, personal enjoyment on your own time &mdash; playing
+				with friends, killing time at home, or just exploring what open source game developers
+				have built and shared with the world.</p>
 
-		<p>Credit to <strong>EmulatorOS/gfile</strong> for the open source games featured on this
-			site. This collection exists thanks to the open source community and the developers who
-			make their work freely available.</p>
-	</main>
+			<p>These games are <strong>not</strong> meant to be used in school. This site is not
+				designed for, intended for, or endorsed for use during class, on school networks, or on
+				school-managed devices. School time is for learning &mdash; play these at home. Any use
+				of this site inside a school is not intended and is solely the user's own choice and
+				responsibility.</p>
 
-	<footer class="disclaimer">
-		<p>This site is a collection of open source games intended for fun, personal use only.
-			It is not intended to be used within school in any way. Any use inside school is not
-			intended and is solely the user's responsibility.</p>
-	</footer>
+			<h2>Credits</h2>
+
+			<p>Credit to <strong>EmulatorOS/gfile</strong> for the open source games featured on this
+				site. This collection exists thanks to the open source community and the developers who
+				make their work freely available.</p>
+		</main>
+
+		<footer class="disclaimer">
+			<p>This site is a collection of open source games intended for fun, personal use only.
+				It is not intended to be used within school in any way. Any use inside school is not
+				intended and is solely the user's responsibility.</p>
+		</footer>
+
+	</div>
+
+	<script src="games-data.js?v=5"></script>
+	<script src="site.js?v=5"></script>
 
 </body>
 

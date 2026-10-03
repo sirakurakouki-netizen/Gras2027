@@ -19,5 +19,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
+      # 追加した診断処理
+      - name: Check repository size
+        run: |
+          echo "=== Repository total size ==="
+          du -sh --exclude=.git .
+
+          echo "=== Largest 20 files ==="
+          find . -type f -not -path './.git/*' \
+            -printf '%s %p\n' | sort -nr | head -20
+
       - name: Deploy to W7S
         uses: w7s-io/w7s-cloud@v1

@@ -1,0 +1,21 @@
+name: Deploy to w7s
+
+on:
+  push:
+    branches:
+      - master   # ← Gras2027 のデフォルトブランチは master です
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: w7s-io/w7s-cloud@v1
+        with:
+          token: ${{ github.token }}
+          # install-command と build-command は不要です（ビルドがないため）
